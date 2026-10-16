@@ -1,0 +1,29 @@
+name: Package WordPress Theme
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package-theme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Prepare installable theme folder
+        run: |
+          mkdir -p dist/eco-kuku
+          cp style.css functions.php header.php footer.php front-page.php index.php page.php single.php 404.php dist/eco-kuku/
+          mkdir -p dist/eco-kuku/assets/js
+          cp assets/js/navigation.js dist/eco-kuku/assets/js/
+          cp README.md dist/eco-kuku/
+      - name: Create theme ZIP
+        run: cd dist && zip -r eco-kuku.zip eco-kuku
+      - name: Upload installable ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: eco-kuku-wordpress-theme
+          path: dist/eco-kuku.zip
+          if-no-files-found: error
