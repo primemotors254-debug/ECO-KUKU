@@ -21,3 +21,7 @@
 
 /* Performance: avoid external font requests and reserve image space to reduce layout shifts. */
 img{height:auto;content-visibility:auto}.brand-icon.logo-image img{width:42px;height:42px;object-fit:contain}.hero img{aspect-ratio:4/3;object-fit:cover}.product-card img,.info-card img{aspect-ratio:4/3;object-fit:cover}
+
+/* Eco Kuku logo feature in the Knowledge for the journey section */
+.editorial-photo.logo-feature img{object-fit:contain;background:#fff;padding:32px;border-radius:8px}
+@media(max-width:760px){.editorial-photo.logo-feature img{height:300px;padding:24px}}
