@@ -8,5 +8,5 @@ window.ECO_KUKU_CONFIG = {
   whatsappNumber: "254751300492",
   displayPhone: "0751 300 492",
   email: "",
-  location: "Kenya"
+  location: "Outer Ring Road, Kariobangi, opposite National Concrete Ltd, Nairobi, Kenya"
 };
