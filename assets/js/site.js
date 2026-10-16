@@ -90,6 +90,8 @@
 
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
+  var whatsappDisplay = document.querySelectorAll('[data-contact="whatsapp"]');
+  whatsappDisplay.forEach(function (el) { if (config.displayPhone) { el.textContent = config.displayPhone; if (number) { el.href = 'https://wa.me/' + number; el.target = '_blank'; el.rel = 'noopener noreferrer'; } } });
   var phone = document.querySelectorAll('[data-contact="phone"]');
   phone.forEach(function (el) { if (config.displayPhone) { el.textContent = config.displayPhone; el.href = 'tel:' + config.displayPhone.replace(/[^+0-9]/g, ''); } });
   var email = document.querySelectorAll('[data-contact="email"]');
