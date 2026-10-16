@@ -5,8 +5,8 @@
  * Do not include +, spaces, brackets, or hyphens.
  */
 window.ECO_KUKU_CONFIG = {
-  whatsappNumber: "",
-  displayPhone: "",
+  whatsappNumber: "254751300492",
+  displayPhone: "0751 300 492",
   email: "",
   location: "Kenya"
 };
