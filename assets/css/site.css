@@ -25,3 +25,5 @@ img{height:auto;content-visibility:auto}.brand-icon.logo-image img{width:42px;he
 /* Eco Kuku logo feature in the Knowledge for the journey section */
 .editorial-photo.logo-feature img{object-fit:contain;background:#fff;padding:32px;border-radius:8px}
 @media(max-width:760px){.editorial-photo.logo-feature img{height:300px;padding:24px}}
+
+.footer-location{max-width:260px;margin:8px 0 0;color:#b9c9ba;font-size:11px;line-height:1.7}.footer-location span{color:#b9c9ba}
