@@ -30,6 +30,64 @@
       });
     }
   });
+
+  // Lightweight cart for the static product catalogue. Orders are submitted through WhatsApp.
+  var cart = [];
+  var cartItems = document.getElementById('cart-items');
+  var cartCount = document.getElementById('cart-count');
+  var cartTotal = document.getElementById('cart-total');
+  var checkoutButton = document.getElementById('checkout-whatsapp');
+  function money(value) { return 'KSh ' + Number(value).toLocaleString('en-KE'); }
+  function renderCart() {
+    if (!cartItems) return;
+    var count = cart.reduce(function (sum, item) { return sum + item.qty; }, 0);
+    var total = cart.reduce(function (sum, item) { return sum + item.price * item.qty; }, 0);
+    cartCount.textContent = '(' + count + (count === 1 ? ' item' : ' items') + ')';
+    cartTotal.textContent = money(total);
+    checkoutButton.disabled = cart.length === 0;
+    if (!cart.length) {
+      cartItems.innerHTML = '<p class="cart-empty">Your cart is empty. Add products below to get started.</p>';
+      return;
+    }
+    cartItems.innerHTML = cart.map(function (item, index) {
+      return '<div class="cart-row"><div class="cart-product"><strong>' + item.name + '</strong><small>' + money(item.price) + ' each</small></div><div class="cart-controls"><button type="button" data-cart-action="minus" data-index="' + index + '" aria-label="Decrease quantity">−</button><span>' + item.qty + '</span><button type="button" data-cart-action="plus" data-index="' + index + '" aria-label="Increase quantity">+</button><button type="button" class="cart-remove" data-cart-action="remove" data-index="' + index + '">Remove</button></div><strong class="cart-line-total">' + money(item.price * item.qty) + '</strong></div>';
+    }).join('');
+  }
+  document.querySelectorAll('.add-to-cart').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var name = button.getAttribute('data-product');
+      var price = Number(button.getAttribute('data-price'));
+      var existing = cart.find(function (item) { return item.name === name; });
+      if (existing) existing.qty += 1;
+      else cart.push({ name: name, price: price, qty: 1 });
+      renderCart();
+      var original = button.textContent;
+      button.textContent = 'Added ✓';
+      window.setTimeout(function () { button.textContent = original; }, 900);
+    });
+  });
+  if (cartItems) cartItems.addEventListener('click', function (event) {
+    var control = event.target.closest('[data-cart-action]');
+    if (!control) return;
+    var index = Number(control.getAttribute('data-index'));
+    if (!cart[index]) return;
+    var action = control.getAttribute('data-cart-action');
+    if (action === 'plus') cart[index].qty += 1;
+    if (action === 'minus') cart[index].qty -= 1;
+    if (action === 'remove' || cart[index].qty <= 0) cart.splice(index, 1);
+    renderCart();
+  });
+  var clearCart = document.getElementById('cart-clear');
+  if (clearCart) clearCart.addEventListener('click', function () { cart = []; renderCart(); });
+  if (checkoutButton) checkoutButton.addEventListener('click', function () {
+    if (!cart.length || !number) return;
+    var lines = cart.map(function (item) { return item.qty + ' × ' + item.name + ' — ' + money(item.price * item.qty); });
+    var total = cart.reduce(function (sum, item) { return sum + item.price * item.qty; }, 0);
+    var message = 'Hello Eco Kuku, I would like to place this order:\n' + lines.join('\n') + '\nTotal: ' + money(total) + '\nPlease confirm availability and delivery or collection options.';
+    window.open('https://wa.me/' + number + '?text=' + encodeURIComponent(message), '_blank', 'noopener');
+  });
+  renderCart();
+
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
   var phone = document.querySelectorAll('[data-contact="phone"]');
