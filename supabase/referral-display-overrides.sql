@@ -2,8 +2,10 @@
 create table if not exists public.referral_display_overrides (
   member_id uuid primary key references public.profiles(id) on delete cascade,
   display_count integer not null check (display_count >= 0),
+  active_display_count integer check (active_display_count is null or active_display_count >= 0),
   updated_at timestamptz not null default now()
 );
+alter table public.referral_display_overrides add column if not exists active_display_count integer check (active_display_count is null or active_display_count >= 0);
 alter table public.referral_display_overrides enable row level security;
 grant select on public.referral_display_overrides to authenticated;
 grant insert, update, delete on public.referral_display_overrides to authenticated;
